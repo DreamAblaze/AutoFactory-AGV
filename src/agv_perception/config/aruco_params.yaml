@@ -1,0 +1,43 @@
+aruco_detector:
+  ros__parameters:
+
+    use_sim_time: true
+
+    # =====================================================
+    # Camera
+    # =====================================================
+
+    image_topic: /camera/image_raw
+    camera_info_topic: /camera/camera_info
+
+    # =====================================================
+    # ArUco
+    # =====================================================
+
+    dictionary: DICT_6X6_250
+    target_marker_id: 0
+    marker_length: 0.20
+
+    # 关键修复参数
+    min_marker_distance_rate: 0.02
+    min_corner_distance_rate: 0.05
+
+    # =====================================================
+    # Enable logic
+    # =====================================================
+
+    enabled_on_startup: false
+
+    # =====================================================
+    # Stable detection
+    # =====================================================
+
+    stable_required_frames: 5
+
+    # =====================================================
+    # Debug
+    # =====================================================
+
+    publish_debug_image: true
+    draw_axes: true
+    axis_length: 0.10

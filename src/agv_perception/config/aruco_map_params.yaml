@@ -1,0 +1,42 @@
+aruco_map_transformer:
+  ros__parameters:
+
+    use_sim_time: true
+
+    # =====================================================
+    # Frames / Topics
+    # =====================================================
+
+    map_frame: map
+
+    marker_pose_topic: /aruco/marker_pose
+    locked_topic: /aruco/locked
+
+    require_locked: true
+
+    # Robot is stationary at Parking Staging.
+    use_latest_tf: true
+
+    tf_timeout_sec: 0.30
+
+    # =====================================================
+    # Simulation ground-truth validation
+    #
+    # IMPORTANT:
+    # Gazebo world and ROS map are different frames.
+    # Therefore raw Gazebo coordinates must NOT be compared
+    # directly with marker_pose_map.
+    #
+    # Keep disabled during normal operation.
+    # =====================================================
+
+    enable_ground_truth_validation: false
+
+    # Gazebo WORLD-frame reference.
+    # Reserved for later simulation evaluation after
+    # explicit world -> map alignment.
+    ground_truth_marker_x: -7.572620
+    ground_truth_marker_y: -4.473930
+    ground_truth_marker_z: 0.350
+
+    validation_xy_tolerance: 0.15

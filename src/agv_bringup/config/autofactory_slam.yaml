@@ -1,0 +1,152 @@
+slam_toolbox:
+  ros__parameters:
+
+    # =========================================================
+    # 1. 求解器配置
+    # =========================================================
+
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
+    ceres_preconditioner: SCHUR_JACOBI
+    ceres_trust_strategy: LEVENBERG_MARQUARDT
+    ceres_dogleg_type: TRADITIONAL_DOGLEG
+    ceres_loss_function: None
+
+    # =========================================================
+    # 2. 坐标系与话题
+    # =========================================================
+
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_footprint
+    scan_topic: /scan
+
+    use_sim_time: true
+    use_map_saver: true    # 开启后可以调用 ROS 服务保存 pgm 地图和 yaml 地图文件；关闭之后无法保存地图。
+    mode: mapping  # mapping：建图模式，不断新增约束、构建位姿图，适合初次建图；
+    # localization：定位模式，加载已有地图，只修正机器人位置，不再新增地图约束；
+
+    # 当前不是加载旧位姿图继续建图，因此保持注释
+    # map_file_name: ""
+    # map_start_pose: [0.0, 0.0, 0.0]
+    # map_start_at_dock: false
+
+    # =========================================================
+    # 3. 数据处理和地图刷新
+    # =========================================================
+
+    debug_logging: false
+
+    # 处理每一帧激光，不主动跳帧
+    throttle_scans: 1
+
+    # map -> odom TF发布周期，SLAM 向外发布map‑>odom坐标变换的频率
+    transform_publish_period: 0.02  # 数值越小发布频率越高，导航运行越平稳；不要大于 0.05。
+
+    # 每1秒重新生成和发布一次二维栅格地图
+    map_update_interval: 1.0    # 地图更新间隔，把构建完成的地图发布出去给 RViz 的时间间隔。
+
+    # 每个栅格对应5 cm，栅格地图分辨率，分辨率越小地图越精细，但是整张地图占用内存成倍上升；
+    resolution: 0.05
+
+    # 当前base_scan实际范围约为0.12～3.5 m。
+    # 略微避开量程边缘，过滤掉近距离噪声和量程边缘不稳定的数据。如果不取掉量程边界，远处数据抖动会造成扫描匹配错位。
+    min_laser_range: 0.15
+    max_laser_range: 3.40
+
+    # 当前激光约5 Hz，即每帧约0.2秒
+    minimum_time_interval: 0.20
+
+    # 查询TF时允许的等待时间
+    transform_timeout: 0.30 #SLAM 要获取 odom‑base_footprint 的 TF；如果 0.3 秒获取不到 TF，就放弃这一帧激光数据。
+
+    # 保留30秒TF缓存
+    tf_buffer_duration: 30.0  # SLAM 做闭环的时候，需要调取几十秒之前的 TF 数据；缓存时间太短会导致闭环失败。
+
+    # 序列化较大地图所需栈空间
+    stack_size_to_use: 40000000
+
+    # 当前不使用RViz中的交互式位姿图编辑，关闭可降低内存占用
+    enable_interactive_mode: false
+
+    # =========================================================
+    # 4. 扫描匹配通用参数
+    # =========================================================
+
+    use_scan_matching: true
+    use_scan_barycenter: true
+
+    # 机器人移动10 cm后允许加入新扫描
+    minimum_travel_distance: 0.10  #机器人至少向前走0.1米，这一帧的激光数据才会参与建图；只挪动0.05米，雷达数据直接丢弃，不会更新地图。
+
+    # 机器人旋转0.10 rad（约5.7°）后允许加入新扫描
+    minimum_travel_heading: 0.10   # 机器人旋转多少角度之后，当前激光帧才会被采纳用于建图。
+
+    # 保存最近10帧扫描用于局部匹配
+    scan_buffer_size: 10
+    scan_buffer_maximum_scan_distance: 10.0
+
+    # 提高局部匹配最低响应，减少质量过差的扫描进入位姿图
+    link_match_minimum_response_fine: 0.15  # 扫描匹配的相似度得分 0~1；低于 0.15 认为匹配质量太差，拒绝将该帧加入位姿图。
+    # 阈值越低接纳的帧越多，但容易匹配出错；阈值过高 SLAM 很难添加新帧，地图残缺。
+
+    # 局部扫描匹配最大距离
+    link_scan_maximum_distance: 1.20
+
+    # =========================================================
+    # 5. 闭环检测
+    # =========================================================
+
+    do_loop_closing: true
+    #当机器人回到曾经来过的位置，SLAM 识别出来，添加约束修正之前所有位姿，消除里程计累计漂移；关闭之后机器人长距离行驶地图一定会歪斜。
+    loop_search_maximum_distance: 3.0
+    #机器人当前位置和历史节点相距 3 米之内，才会尝试做闭环搜索；相隔超过 3 米不再判断闭环。
+
+    loop_match_minimum_chain_size: 10  # 只有连续 10 帧都判定匹配成功，这次闭环才生效。
+    loop_match_maximum_variance_coarse: 3.0  # 粗匹配阶段位姿方差上限；方差超过 3 判定匹配不靠谱，放弃本次闭环。
+
+    # 相比原配置稍微提高阈值，减少错误闭环
+    loop_match_minimum_response_coarse: 0.40  # 粗匹配：得分≥0.4 才进入精细匹配；
+    loop_match_minimum_response_fine: 0.50  # 精细匹配：得分≥0.5 闭环约束才会生效。
+    # 阈值设置偏低：很容易出现错误闭环，整张地图被拉变形；阈值太高：机器人绕圈回来也无法闭环，漂移无法消除；
+    # 原默认值粗匹配 0.3、精细 0.4；你这里提高到 0.4/0.5，安全性更高，适合环境相似、墙面较多的室内场景。
+
+    # =========================================================
+    # 6. 普通相关性扫描匹配参数
+    # =========================================================
+
+    correlation_search_space_dimension: 0.5  # 基于上一时刻里程计给出的预测位置，在 0.5m 范围内搜索最优匹配位置。
+    correlation_search_space_resolution: 0.01
+    # 搜索步长 0.01 米；在 0.5m 范围内以 1cm 步长遍历寻找最优位置。越小匹配精度越高，耗时更长。
+    correlation_search_space_smear_deviation: 0.1 # 概率平滑偏差，给搜索区域做模糊平滑；应对激光点少量噪声。
+
+    # =========================================================
+    # 7. 闭环相关性搜索参数
+    # =========================================================
+
+    loop_search_space_dimension: 8.0 # 机器人回到旧位置，里程计已经漂移，允许 8 米范围内重新匹配。
+    loop_search_space_resolution: 0.05  # 闭环搜索步长 5cm，相比局部匹配步长更长，先粗略锁定位置。
+    loop_search_space_smear_deviation: 0.03  # 闭环匹配时的平滑系数。
+
+    # =========================================================
+    # 8. 精细扫描匹配参数
+    # =========================================================
+
+    distance_variance_penalty: 0.5
+    angle_variance_penalty: 1.0
+
+    fine_search_angle_offset: 0.00349
+    coarse_search_angle_offset: 0.349
+    coarse_angle_resolution: 0.0349
+
+    minimum_angle_penalty: 0.9
+    minimum_distance_penalty: 0.5
+
+    use_response_expansion: true
+
+    # 一个栅格至少需要多次射线证据，减少偶发黑点
+    min_pass_through: 3
+
+    # 原值0.1较容易把弱观测标记为障碍物。
+    # 调至0.15可适度减少零散黑斑。
+    occupancy_threshold: 0.15

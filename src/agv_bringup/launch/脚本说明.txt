@@ -1,0 +1,10 @@
+### spawn_waffle.launch.py 自定义机器人节点
+启动spawn_waffle节点, 在Gazebo中生成Waffle
+### waffle_teleop.launch.py 机器人键盘控制节点
+### navigation.launch.py 启动 Nav2 导航系统的入口文件
+读取地图
+读取 Nav2 参数文件
+把这些参数传给 nav2_bringup 的 bringup_launch.py
+启动 AMCL、map_server、planner_server、controller_server、bt_navigator 等 Nav2 节点
+
+### start_autofactory_rpp.sh 一键启动脚本，生gazebo成地图和机器人、启动nv2导航与定位，读取pgm、发布初始位姿、打开RViz

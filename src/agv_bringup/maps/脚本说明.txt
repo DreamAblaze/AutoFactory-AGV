@@ -1,0 +1,14 @@
+### autofactory_best_20260713_203225.pgm 二维占据栅格地图图片
+
+### autofactory_best_20260713_203225.yaml 地图描述文件
+
+.pgm + .yaml主要用于：
+map_server
+AMCL
+Nav2
+静态地图导航
+
+posegraph 需要接续扫描的地图数据
+
+
+### autofactory_navigation.pgm和autofactory_navigation.yaml是对上述文件的拷贝，用于导航的地图

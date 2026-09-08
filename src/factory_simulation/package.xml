@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<package format="3">
+
+  <name>factory_simulation</name>
+
+  <version>0.1.0</version>
+
+  <description>
+    Gazebo factory world, models, and simulation launch files
+    for the ROS 2 AutoFactory AGV project.
+  </description>
+
+  <maintainer email="15805472248@163.com">
+    Audrey Johnson
+  </maintainer>
+
+  <license>Apache-2.0</license>
+
+  <!-- 编译系统 -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- 运行Gazebo世界 -->
+  <exec_depend>gazebo_ros</exec_depend>
+
+  <!-- ROS 2 Launch系统 -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <!-- 在Python Launch中查找功能包路径 -->
+  <exec_depend>ament_index_python</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>

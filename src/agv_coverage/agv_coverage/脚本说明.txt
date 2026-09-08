@@ -1,0 +1,30 @@
+### map_utils.py 地图处理器，将ROS地图消息转化成为数学矩阵地图
+（1）将/map的ROS消息转化为数学矩阵：数据转化与清晰、障碍物膨胀（对障碍物矩阵进行膨胀后取反得到安全自由区域）、剔除孤立碎片区域（BFS找到地图中所有连通的自由区域、只保留最大的自由连通区域）；（2）坐标转换：使用 grid_to_world 与 world_to_grid，算法内部计算通常用栅格坐标，但最终给机器人下发的路径点必须是世界坐标（浮点数）。（3）几何计算与路径校验：布雷森汉姆直线算法检查两点之间是否有障碍物遮挡，如果连线上有任何一个格子是 False（障碍物），说明路径被堵死；计算累加欧氏距离。Bresenham 返回 False（被挡）的意义，就是告诉上层算法：“当前这个直线方案不可行，请切换方案。
+
+### grid_coverage_planner.py   弓字形（牛耕式）全覆盖路径规划器
+ 1. OccupancyGrid 转自由栅格；
+    2. 障碍物膨胀；
+    3. 最大自由连通区域提取；
+    4. PCA 估计自由空间主方向；
+    5. 生成平行扫描线；
+    6. 提取自由线段；
+    7. 蛇形排序；
+    8. 用直线或 A* 连接相邻线段；
+    9. 计算覆盖率和路径长度。
+
+### a_star_connector.py  A*负责在扫描线段之间找连接路径
+### coverage_node.py   它负责把前面所有算法接到 ROS 系统里。
+订阅 /map
+提供 /start_coverage 服务
+调用 grid_coverage_planner 生成完整路径
+调用 waypoint_utils 抽稀航点
+发布 /coverage_path
+发布 /coverage_waypoints
+发布 /coverage_status
+发布 /coverage_progress
+提供 /execute_coverage 服务
+调用 Nav2 的 /navigate_through_poses
+监听 Nav2 执行结果
+一批完成后发送下一批
+
+### map_utils.py   覆盖路径航点抽稀工具。

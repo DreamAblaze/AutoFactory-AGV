@@ -1,0 +1,85 @@
+parking_staging_navigator:
+  ros__parameters:
+
+    use_sim_time: true
+
+    # ========================================================
+    # Frames
+    # ========================================================
+
+    map_frame: map
+    base_frame: base_footprint
+
+
+    # ========================================================
+    # Nav2 Actions
+    # ========================================================
+
+    compute_path_action: /compute_path_to_pose
+    follow_path_action: /follow_path
+    spin_action: /spin
+
+
+    # ========================================================
+    # Nav2 Plugins
+    # ========================================================
+
+    planner_id: StagingGrid
+    controller_id: FollowPath
+    goal_checker_id: staging_goal_checker
+
+
+    # ========================================================
+    # Action server
+    # ========================================================
+
+    action_server_wait_timeout_sec: 5.0
+
+
+    # ========================================================
+    # Staging target
+    #
+    # 这是之前已经验证过能够面对二维码的目标。
+    # ========================================================
+
+    staging_x: -6.0
+    staging_y: -4.5
+    staging_yaw: 3.1
+
+
+    # ========================================================
+    # Arrival / final heading
+    # ========================================================
+
+    max_path_endpoint_error: 0.06
+
+    arrival_xy_tolerance: 0.08
+
+    # 5 degree
+    final_yaw_tolerance: 0.087266
+
+    # 最终原地转向最多允许10秒
+    spin_time_allowance_sec: 10.0
+
+
+    # ========================================================
+    # ArUco marker reference
+    # ========================================================
+
+    marker_x: -7.57262
+    marker_y: -4.47393
+    marker_yaw: 1.570801
+
+    max_marker_lateral_offset: 0.3
+
+
+    # ========================================================
+    # Parking goal reference
+    #
+    # 这里保持诊断文件中的原始值，
+    # 本阶段不要擅自改。
+    # ========================================================
+
+    parking_goal_x: -8.37262
+    parking_goal_y: -4.47393
+    parking_goal_yaw: 0.0

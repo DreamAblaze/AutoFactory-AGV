@@ -1,0 +1,21 @@
+material AutoFactory/ArucoMarker0
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+
+      ambient 1 1 1 1
+      diffuse 1 1 1 1
+      specular 0 0 0 1
+      emissive 0.1 0.1 0.1 1
+
+      texture_unit
+      {
+        texture aruco_0.png
+        filtering none
+      }
+    }
+  }
+}

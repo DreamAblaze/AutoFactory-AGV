@@ -1,0 +1,5 @@
+### prepare_factory_world.py
+World自动清理脚本,原World文件最前面包含两个与AGV项目无关的模型：deletion_wall和drone_collection_zone和<state world_name="factory">它保存的是Gazebo上一次保存世界时的瞬时状态，例如：
+模型瞬时位姿；瞬时速度；加速度；力；GUI保存状态。这些内容不适合作为项目的基础World，应当从正式文件中删除。
+
+### generate_aruco_marker.py 生成AutoFactory停车位使用的ArUco标记。

@@ -1,0 +1,9 @@
+### spawn_waffle.py 自定义机器人节点
+自动查找TurtleBot3 Waffle模型
+读取model.sdf
+处理turtlebot3_common网格资源路径
+等待Gazebo生成服务
+删除可能存在的同名旧机器人
+设置机器人初始位姿
+向/spawn_entity发送生成请求
+它本质上是两个服务的客户端:/delete_entity   /spawn_entity

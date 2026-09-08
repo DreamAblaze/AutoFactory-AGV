@@ -1,0 +1,48 @@
+coverage_node:
+  ros__parameters:
+    use_sim_time: true
+
+    map_topic: "/map"
+    coverage_path_topic: "/coverage_path"
+    coverage_waypoints_topic: "/coverage_waypoints"
+    coverage_status_topic: "/coverage_status"
+    coverage_progress_topic: "/coverage_progress"
+
+    # 地图处理
+    occupied_threshold: 50
+    unknown_as_obstacle: true
+    use_largest_connected_region: true
+
+    # 安全距离：障碍物膨胀半径
+    obstacle_inflation_radius: 0.35
+
+    # 牛耕扫描参数
+    sweep_spacing: 0.40
+    min_segment_length: 0.60
+    sample_step: 0.05
+
+    # 相邻扫描线连接
+    use_astar_connection: true
+    astar_max_search_cells: 50000
+
+    # 航点抽稀参数
+    waypoint_spacing: 0.8    # 长直线中大约每 1.5 m 保留一个航点。
+    min_waypoint_distance: 0.45    # 两个航点之间小于 0.45 m 就不保留，防止局部点太密。
+    turn_angle_threshold_deg: 150.0  # 只有接近大转弯、掉头的位置才保留转角点，不再保留栅格斜线中的小阶梯点。
+    max_waypoints_per_batch: 10   # 后续执行时仍然每批最多 30 个航点。
+
+    # 根据机器人初始位置选择覆盖路径方向
+    # 如果覆盖路径的末端比起点更靠近机器人，就自动反转路径
+    optimize_start_direction: true
+    start_x: 8.738
+    start_y: 7.489
+
+    # 覆盖率估计
+    coverage_radius: 0.25
+    target_coverage_rate: 0.90
+
+    execute_after_plan: false
+    navigate_action_name: "/navigate_through_poses"
+    execute_service_name: "/execute_coverage"
+    max_batches_to_execute: 0    # 0 表示执行全部批次
+    start_batch_index: 0    # 表示从第 1 批开始执行

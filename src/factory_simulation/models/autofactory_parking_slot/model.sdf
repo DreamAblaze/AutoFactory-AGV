@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+
+  <model name="autofactory_parking_slot">
+
+    <!--
+      停车位固定在地面上，不会被机器人推动。
+    -->
+    <static>true</static>
+
+    <!--
+      停车位模型原点位于车位中心。
+      局部+X方向表示机器人最终车头方向。
+    -->
+    <pose>0 0 0 0 0 0</pose>
+
+    <link name="parking_slot_link">
+
+      <!-- 左侧白色长边 -->
+      <visual name="left_boundary_visual">
+        <pose>0 0.375 0.0075 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>1.20 0.04 0.015</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 右侧白色长边 -->
+      <visual name="right_boundary_visual">
+        <pose>0 -0.375 0.0075 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>1.20 0.04 0.015</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 入口侧白色短边 -->
+      <visual name="entry_boundary_visual">
+        <pose>-0.60 0 0.0075 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.04 0.79 0.015</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 末端白色短边 -->
+      <visual name="rear_boundary_visual">
+        <pose>0.60 0 0.0075 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.04 0.79 0.015</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.05 0.05 0.05 1</specular>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 蓝色方向箭头的主干，指向局部+X -->
+      <visual name="direction_arrow_shaft_visual">
+        <pose>0 0 0.0105 0 0 0</pose>
+
+        <geometry>
+          <box>
+            <size>0.40 0.035 0.007</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>0.10 0.50 1.00 1</ambient>
+          <diffuse>0.10 0.50 1.00 1</diffuse>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 箭头上半部分 -->
+      <visual name="direction_arrow_head_upper_visual">
+        <pose>0.20 0.055 0.0105 0 0 -0.78539816339</pose>
+
+        <geometry>
+          <box>
+            <size>0.16 0.035 0.007</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>0.10 0.50 1.00 1</ambient>
+          <diffuse>0.10 0.50 1.00 1</diffuse>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <!-- 箭头下半部分 -->
+      <visual name="direction_arrow_head_lower_visual">
+        <pose>0.20 -0.055 0.0105 0 0 0.78539816339</pose>
+
+        <geometry>
+          <box>
+            <size>0.16 0.035 0.007</size>
+          </box>
+        </geometry>
+
+        <material>
+          <ambient>0.10 0.50 1.00 1</ambient>
+          <diffuse>0.10 0.50 1.00 1</diffuse>
+        </material>
+
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+    </link>
+
+  </model>
+
+</sdf>
