@@ -8,6 +8,95 @@
 
 ## 项目简介
 
+## System Demonstration
+
+### Gazebo Factory Environment
+
+<p align="center">
+  <img src="images/gazebo_factory.png" width="1000">
+</p>
+
+<p align="center">
+  <b>AutoFactory AGV Gazebo factory simulation environment</b>
+</p>
+
+The factory simulation environment contains warehouse shelves, conveyors, industrial equipment, pallets, obstacles, working areas, and the autonomous mobile robot operating space.
+
+---
+
+### Nav2 Autonomous Navigation and Full-Coverage Inspection
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="images/nav2_navigation.png" width="100%">
+      <br>
+      <b>Nav2 Autonomous Navigation</b>
+    </td>
+    <td width="50%" align="center">
+      <img src="images/full_coverage_path.png" width="100%">
+      <br>
+      <b>Full-Coverage Inspection</b>
+    </td>
+  </tr>
+</table>
+
+**Nav2 Autonomous Navigation**
+
+The Nav2 subsystem provides AMCL localization, global path planning, Regulated Pure Pursuit control, velocity smoothing, and autonomous path following in the factory environment.
+
+**Full-Coverage Inspection**
+
+The coverage subsystem generates a boustrophedon-style inspection path from the occupancy grid map and executes the coverage mission through multi-batch `NavigateThroughPoses`.
+
+---
+
+### ArUco Recognition and Hybrid A* Autonomous Parking
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="images/aruco_detection.png" width="100%">
+      <br>
+      <b>ArUco Visual Recognition</b>
+    </td>
+    <td width="50%" align="center">
+      <img src="images/hybrid_astar_parking.png" width="100%">
+      <br>
+      <b>Hybrid A* Autonomous Parking</b>
+    </td>
+  </tr>
+</table>
+
+**ArUco Visual Recognition**
+
+The perception subsystem detects and stably locks ArUco ID `0`, estimates the marker pose, and transforms the result into the ROS `map` frame.
+
+**Hybrid A* Autonomous Parking**
+
+After visual localization, the system generates a Hybrid A* parking trajectory and executes the final autonomous parking task using the geometry-aware parking path tracker.
+
+---
+
+## Complete Mission Overview
+
+```text
+Gazebo Factory Environment
+        ↓
+Nav2 Autonomous Navigation
+        ↓
+Full-Coverage Inspection
+        ↓
+Parking Staging
+        ↓
+ArUco Recognition
+        ↓
+Map-Frame Localization
+        ↓
+Hybrid A* Planning
+        ↓
+Autonomous Parking
+
 AutoFactory AGV 是一个基于 **ROS 2 Humble + Gazebo Classic + TurtleBot3 Waffle** 的工厂 AGV 仿真系统，面向“全覆盖巡检 → 自主转场 → 视觉识别 → 自动泊车”的完整任务链。
 
 系统已经完成以下功能集成：
